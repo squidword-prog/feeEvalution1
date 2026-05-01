@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management</title>
+
+    <style>
+        /* TC1 */
+        h1 {
+            color: red;
+            font-size: 30px;
+            text-align: center;
+        }
+
+        /* TC7 */
+        #studentList {
+            background-color: lightblue;
+            border: 2px solid red;
+            padding: 15px;
+            list-style: none;
+        }
+
+        /* TC3 */
+        .student {
+            color: red;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+
+        /* TC2 */
+        .first {
+            font-weight: bold;
+            background-color: lightgray;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TC1 -->
+    <h1 id="heading">Student List</h1>
+
+    <!-- TC4 -->
+    <button id="addBtn">Add Student</button>
+
+    <ul id="studentList">
+        <li class="student first">John</li>
+        <li class="student">Alice</li>
+        <li class="student">Bob</li>
+    </ul>
+
+    <script>
+        const heading = document.getElementById("heading");
+        const list = document.getElementById("studentList");
+        const addBtn = document.getElementById("addBtn");
+
+        /* TC2 */
+        function updateFirstItem() {
+            const items = document.querySelectorAll(".student");
+
+            items.forEach(item => item.classList.remove("first"));
+
+            if (items.length > 0) {
+                items[0].classList.add("first");
+            }
+        }
+
+        /* TC5 + TC6 */
+        function onItemClick(event) {
+            const item = event.target;
+
+            heading.textContent = item.textContent; // TC6
+            item.remove(); // TC5
+
+            updateFirstItem(); // TC2
+        }
+
+        function attachEvents() {
+            const items = document.querySelectorAll(".student");
+
+            items.forEach(item => {
+                item.onclick = onItemClick;
+            });
+        }
+
+        attachEvents();
+
+        /* TC4 */
+        addBtn.onclick = function () {
+            const newItem = document.createElement("li");
+
+            newItem.textContent = "New Student";
+            newItem.className = "student";
+
+            newItem.style.color = "red";
+            newItem.style.backgroundColor = "yellow";
+
+            newItem.onclick = onItemClick;
+
+            list.appendChild(newItem);
+
+            updateFirstItem(); // TC2
+        };
+    </script>
+
+</body>
+
+</html>

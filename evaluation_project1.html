@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List - Event Delegation Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        li {
+            padding: 18px 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        li:hover {
+            background-color: #e8f4fd;
+        }
+
+        button {
+            margin: 20px 5px 10px;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #addProduct {
+            background: #27ae60;
+            color: white;
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        .note {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🛒 Product Catalog</h1>
+    <p><strong>Click on any product</strong> to see its name.</p>
+
+    <ul id="productList">
+        <li data-name="Laptop">Laptop</li>
+        <li data-name="Smartphone">Smartphone</li>
+        <li data-name="Headphones">Headphones</li>
+        <li data-name="Tablet">Tablet</li>
+    </ul>
+
+    <button id="addProduct">Add New Product</button>
+
+    <div class="controls">
+        <label>
+            <input type="checkbox" id="enableCapture" checked>
+            Enable Capturing Phase (Parent should alert first)
+        </label>
+        <br><br>
+        <button id="toggleStopProp">Apply stopPropagation() on LI (TC3)</button>
+    </div>
+
+    <div class="note">
+        <strong>How to Test:</strong><br>
+        TC1 & TC5 → Click any item (including newly added)<br>
+        TC2 → Click on empty space inside the list box<br>
+        TC3 → Use the stopPropagation button then click item<br>
+        TC4 → Click "Add New Product"<br>
+        TC6 & TC7 → Toggle the checkbox and observe order of alerts
+    </div>
+
+    <script>
+        // Get elements
+        const productList = document.getElementById('productList');
+        const addButton = document.getElementById('addProduct');
+        const captureCheckbox = document.getElementById('enableCapture');
+        const stopPropBtn = document.getElementById('toggleStopProp');
+
+        let stopPropagationEnabled = false;
+
+
+        // ==================== EVENT DELEGATION (Main Handler) ====================
+        // This handles clicks on ALL <li> items - old and new ones (TC1 & TC5)
+        function handleListClick(e) {
+            const li = e.target.closest('li');   // Find the nearest <li>
+
+            if (li) {
+                const name = li.dataset.name || li.textContent.trim();
+                alert(`Product: ${name}`);
+
+                // TC3: Stop the event from reaching the parent <ul>
+                if (stopPropagationEnabled) {
+                    e.stopPropagation();
+                }
+            }
+        }
+
+
+        // ==================== PARENT HANDLER (Bubbling & Capturing) ====================
+        // This demonstrates event propagation (TC2, TC6, TC7)
+        function handleParentClick(e) {
+            alert("Parent <ul> was clicked! (Bubbling/Capturing Demo)");
+        }
+
+
+        // ==================== ADD NEW PRODUCT (TC4) ====================
+        function addNewProduct() {
+            const newLi = document.createElement('li');
+            const names = ["Keyboard", "Mouse", "Monitor", "Webcam", "Charger"];
+            const randomName = names[Math.floor(Math.random() * names.length)];
+
+            newLi.textContent = randomName;
+            newLi.dataset.name = randomName;
+
+            productList.appendChild(newLi);
+            alert(`New product "${randomName}" added!`);
+        }
+
+
+        // ==================== ATTACH LISTENERS ====================
+
+        // Event Delegation on <ul> - handles all list items
+        productList.addEventListener('click', handleListClick);
+
+        // Parent listener for demonstrating propagation
+        function updateParentListener() {
+            // Remove old listeners
+            productList.removeEventListener('click', handleParentClick, true);
+            productList.removeEventListener('click', handleParentClick, false);
+
+            if (captureCheckbox.checked) {
+                productList.addEventListener('click', handleParentClick, true);  // Capturing (TC6)
+            } else {
+                productList.addEventListener('click', handleParentClick, false); // Bubbling (TC7)
+            }
+        }
+
+        // Button to toggle stopPropagation
+        stopPropBtn.addEventListener('click', () => {
+            stopPropagationEnabled = !stopPropagationEnabled;
+            stopPropBtn.textContent = stopPropagationEnabled
+                ? "Disable stopPropagation()"
+                : "Apply stopPropagation() on LI (TC3)";
+        });
+
+        // Add Product button
+        addButton.addEventListener('click', addNewProduct);
+
+        // Checkbox for capturing phase
+        captureCheckbox.addEventListener('change', updateParentListener);
+
+        // Initial setup
+        updateParentListener();
+
+    </script>
+</body>
+
+</html>

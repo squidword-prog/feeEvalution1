@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mouse Events</title>
+</head>
+
+<body>
+    <div id="box" style="width:200px; height:200px; background-color: lightblue;">
+        Hover or Click Me
+    </div>
+
+    <script>
+        const box = document.getElementById("box");
+
+        box.addEventListener("click", () => alert("click"));
+        box.addEventListener("dblclick", () => alert("dblclick"));
+        box.addEventListener("mousedown", () => alert("mousedown"));
+        box.addEventListener("mouseup", () => alert("mouseup"));
+        box.addEventListener("mouseover", () => alert("mouseover"));
+        box.addEventListener("mouseout", () => alert("mouseout"));
+        box.addEventListener("mousemove", () => alert("mousemove"));
+        box.addEventListener("mouseenter", () => alert("mouseenter"));
+        box.addEventListener("mouseleave", () => alert("mouseleave"));
+        box.addEventListener("contextmenu", () => alert("right click"));
+    </script>
+</body>
+
+</html>

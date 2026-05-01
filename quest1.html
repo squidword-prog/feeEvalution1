@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Event Handling</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .main-div {
+            width: 600px;
+            margin: 50px auto;
+            border: 2px solid black;
+            padding: 30px;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+
+        .inner {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .first {
+            text-align: center;
+            font-size: 18px;
+            border: 2px solid green;
+            padding: 15px;
+            cursor: pointer;
+        }
+
+        .second {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            border: 2px solid blue;
+            padding: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-div">
+        <div class="heading">Hello Everyone</div>
+
+        <div class="inner">
+            <div class="first" id="firstDiv">How are you?</div>
+
+            <div class="second">
+                <button id="hiBtn">Hi</button>
+                <button id="helloBtn">Hello</button>
+                <button id="pingBtn">Ping me</button>
+                <button id="okBtn">OK</button>
+                <button id="howBtn">How</button>
+                <button id="goBtn">Go</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // First div click
+        document.getElementById("firstDiv").onclick = function () {
+            alert("Who are you?");
+        };
+
+        // Hi button click
+        document.getElementById("hiBtn").onclick = function () {
+            alert("Who are you?");
+        };
+
+        // Hello button double click
+        document.getElementById("helloBtn").ondblclick = function () {
+            alert("Who are you?");
+        };
+
+        // How button mouseout
+        document.getElementById("howBtn").onmouseout = function () {
+            alert("Why?");
+        };
+
+        // Go button mousedown
+        document.getElementById("goBtn").onmousedown = function () {
+            alert("Go lost");
+        };
+
+        // OK button click → change Ping me style
+        document.getElementById("okBtn").onclick = function () {
+            let ping = document.getElementById("pingBtn");
+            ping.style.fontFamily = "Times New Roman";
+            ping.style.color = "red";
+        };
+    </script>
+
+</body>
+
+</html>
